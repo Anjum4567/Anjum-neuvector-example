@@ -1,0 +1,72 @@
+﻿apiVersion: v1
+items:
+- apiVersion: neuvector.com/v1
+  kind: NvSecurityRule
+  metadata:
+    name: nv.httpbin.default       #conatiner
+    namespace: default
+  spec:
+    dlp:         
+      settings: []
+      status: true
+    egress: []
+    file: []
+    ingress:             #network rules
+    - action: allow
+      applications:
+      - HTTP
+      name: nv.httpbin.default-ingress-0       #to
+      ports: any
+      priority: 0
+      selector:
+        comment: ""
+        criteria: []
+        name: nodes                   #from 
+        original_name: ""
+    - action: allow
+      applications:
+      - HTTP
+      name: nv.httpbin.default-ingress-1          #to
+      ports: any
+      priority: 0
+      selector:
+        comment: ""
+        name: Workload:ingress          #from 
+        original_name: ""
+    process:   process profile rule
+    - action: allow
+      allow_update: false
+      name: dash
+      path: /bin/dash
+    - action: allow
+      allow_update: false
+      name: gunicorn
+      path: /usr/bin/python3.6
+    - action: allow
+      allow_update: false
+      name: pause
+      path: /pause
+    - action: allow
+      allow_update: false
+      name: uname
+      path: /bin/uname
+    process_profile:
+      baseline: zero-drift
+    target:
+      policymode: Discover  change any 
+      selector:
+        comment: ""
+        criteria:
+        - key: service
+          op: =
+          value: httpbin.default
+        - key: domain
+          op: =
+          value: default
+        name: nv.httpbin.default
+        original_name: ""
+    waf:
+      settings: []
+      status: true
+kind: List
+metadata: null
