@@ -17,4 +17,4 @@ spec:
         - name: c00
           image: httpd:2.4
           ports:
-          - containerPort: 8082
+          - containerPort: 8084
